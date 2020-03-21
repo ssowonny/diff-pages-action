@@ -1,0 +1,20 @@
+name: 'Page Differences'
+description: 'Take screenshots of static web page differences'
+inputs:
+  old-path:
+    description: 'Path to old static pages.'
+    required: true
+  new-path:
+    description: 'Path to new static pages.'
+    required: true
+  output-path:
+    description: 'Path to save the screenshots.'
+    required: true
+# outputs:
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.old_path }}
+    - ${{ inputs.new_path }}
+    - ${{ outputs.path }}

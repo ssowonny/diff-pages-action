@@ -1,0 +1,23 @@
+{
+  "name": "page-differences-action",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sample.js",
+  "directories": {
+    "example": "example"
+  },
+  "dependencies": {
+    "@actions/core": "^1.2.3",
+    "@actions/github": "^2.1.1",
+    "express": "^4.17.1",
+    "glob": "^7.1.6",
+    "puppeteer": "^2.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
