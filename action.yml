@@ -1,6 +1,6 @@
-name: 'Page Differences'
+name: 'Diff Pages Action'
 author: 'Sungwon Lee'
-description: 'Take screenshots of static web page differences'
+description: 'Take screenshots of updated static web pages'
 inputs:
   base-path:
     description: 'Path to base static pages.'
@@ -11,11 +11,11 @@ inputs:
   output-path:
     description: 'Path for saving final screenshots.'
     required: true
-    default: page-differences-action/output
+    default: diff-pages-action/output
   temp-path:
     description: 'Path for saving temporary screenshots.'
     required: true
-    default: page-differences-action/tmp
+    default: diff-pages-action/tmp
   port:
     description: 'Port for running local static web server'
     required: true

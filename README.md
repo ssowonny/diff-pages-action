@@ -1,4 +1,4 @@
-# Page differences action
+# Diff pages action
 
 This action takes screenshots of static web pages and find changed screenshots.
 
@@ -20,11 +20,11 @@ The port value for running the static server. Default `8080`.
 
 ### `output-path`
 
-The path to save updated screenshots. Default `"page-differences-action/output"`.
+The path to save updated screenshots. Default `"diff-pages-action/output"`.
 
 ### `temp-path`
 
-The path to save screenshots of base and head. Default `"page-differences-action/tmp"`.
+The path to save screenshots of base and head. Default `"diff-pages-action/tmp"`.
 
 ## Outputs
 
@@ -34,7 +34,7 @@ The path of a directory contains saved screenshots.
 
 ## Example usage
 
-uses: ssowonny/page-differences-action@v1
+uses: ssowonny/diff-pages-action@v1
 with:
   base-path: 'path/to/base/files'
   head-path: 'path/to/head/files'
