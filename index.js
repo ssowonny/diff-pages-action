@@ -10,7 +10,9 @@ const port = core.getInput('port', { required: true });
 
 var server = null;
 try {
-  server = runServer(basePath, headPath, port);
+  server = runServer(basePath, headPath, port, () => {
+    console.log(`Server listening on ${port}`);
+  });
 } catch (error) {
   core.setFailed(error.message);
 }

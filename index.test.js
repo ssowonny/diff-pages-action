@@ -4,8 +4,8 @@ const { createDiffScreenshots } = require('./src/pgdiff');
 const { runServer } = require('./src/server');
 var server = null;
 
-beforeAll(() => {
-  server = runServer('example/base', 'example/head', 8000);
+beforeAll((done) => {
+  server = runServer('example/base', 'example/head', 8000, done);
 });
 
 afterAll((done) => {
