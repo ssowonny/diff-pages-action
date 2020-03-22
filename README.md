@@ -2,6 +2,32 @@
 
 This action takes screenshots of static web pages and find changed screenshots.
 
+## Usage
+
+```yaml
+steps:
+- uses: actions/checkout@v2
+  with:
+    ref: ${{ github.event.pull_request.base.sha }}
+- run: echo "Build the static pages into 'path/to/base'"
+
+- uses: actions/checkout@v2
+  with:
+    ref: ${{ github.event.pull_request.head.sha }}
+- run: echo "Build the static pages into 'path/to/head'"
+
+- uses: ssowonny/diff-pages-action@v1
+  with:
+    base-path: 'path/to/base'
+    head-path: 'path/to/head'
+  id: diffpages
+
+- uses: actions/upload-artifact@v1
+  with:
+    name: changes-artifact
+    path: '${{ steps.diffpages.outputs.path }}'
+```
+
 ## Inputs
 
 ### `base-path`
@@ -31,10 +57,3 @@ The path to save screenshots of base and head. Default `"diff-pages-action/tmp"`
 ### `path`
 
 The path of a directory contains saved screenshots.
-
-## Example usage
-
-uses: ssowonny/diff-pages-action@v1
-with:
-  base-path: 'path/to/base/files'
-  head-path: 'path/to/head/files'
