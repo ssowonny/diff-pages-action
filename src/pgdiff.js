@@ -4,10 +4,10 @@ const puppeteer = require('puppeteer');
 const path = require('path');
 const { copyDiffFiles } = require('./files');
 
-async function createDiffScreenshots(basePath, headPath, tempPath, outputPath, port) {
+async function createDiffScreenshots(basePath, headPath, tempPath, outputPath, port, pattern) {
   await Promise.all([
-    captureScreenshots(`http://localhost:${port}/head/`, headPath, tempPath + '/head'),
-    captureScreenshots(`http://localhost:${port}/base/`, basePath, tempPath + '/base'),
+    captureScreenshots(`http://localhost:${port}/head/`, headPath, tempPath + '/head', pattern),
+    captureScreenshots(`http://localhost:${port}/base/`, basePath, tempPath + '/base', pattern),
   ]);
   console.log(`Base page screenshots are created in ${tempPath}/base`);
   console.log(`Head page screenshots are created in ${tempPath}/head`);
@@ -17,7 +17,7 @@ async function createDiffScreenshots(basePath, headPath, tempPath, outputPath, p
   return outputPath;
 }
 
-async function captureScreenshots(rootUrl, inputPath, outputPath, pattern = "**/*.+(htm|html)") {
+async function captureScreenshots(rootUrl, inputPath, outputPath, pattern) {
   const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
   const files = glob.sync(`${inputPath}/${pattern}`)
     .map((file) => path.relative(inputPath, file));

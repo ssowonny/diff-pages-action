@@ -38,5 +38,5 @@ jobs:
 
     - uses: actions/upload-artifact@v1
       with:
-        name: changes-artifact
+        name: diff-pages-artifact
         path: '${{ steps.diffpages.outputs.path }}'

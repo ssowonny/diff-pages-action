@@ -1,6 +1,8 @@
 # Diff pages action
 
-This action takes screenshots of static web pages and find changed screenshots.
+This action takes screenshots of built static pages and find only updated
+screenshots. As long as it just compares the built files, the action can be
+integrated by any static site generators such as Hugo, middleman and jekyll.
 
 ## Usage
 
@@ -16,15 +18,18 @@ steps:
     ref: ${{ github.event.pull_request.head.sha }}
 - run: echo "Build the static pages into 'path/to/head'"
 
-- uses: ssowonny/diff-pages-action@v1
+- id: diffpages
+  uses: ssowonny/diff-pages-action@v1
   with:
     base-path: 'path/to/base'
     head-path: 'path/to/head'
-  id: diffpages
 
+# This example step is for uploading the result as an artifact. The result or
+# the artifact can be uploaded to the pull request comments, Amazon S3, or
+# any place according to the github action settings.
 - uses: actions/upload-artifact@v1
   with:
-    name: changes-artifact
+    name: diff-pages-artifact
     path: '${{ steps.diffpages.outputs.path }}'
 ```
 

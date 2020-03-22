@@ -8,6 +8,14 @@ inputs:
   head-path:
     description: 'Path to head static pages.'
     required: true
+  pattern:
+    description: 'glob pattern for detecting page files.'
+    required: true
+    default: '**/*.+(htm|html)'
+  port:
+    description: 'Port for running local static web server'
+    required: true
+    default: 8000
   output-path:
     description: 'Path for saving final screenshots.'
     required: true
@@ -16,10 +24,6 @@ inputs:
     description: 'Path for saving temporary screenshots.'
     required: true
     default: diff-pages-action/tmp
-  port:
-    description: 'Port for running local static web server'
-    required: true
-    default: 8000
 outputs:
   path:
     description: 'Path to saved screenshots.'
