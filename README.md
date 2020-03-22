@@ -2,7 +2,8 @@
 
 This action takes screenshots of built static pages and find only updated
 screenshots. As long as it just compares the built files, the action can be
-integrated by any static site generators such as Hugo, middleman and jekyll.
+integrated by any static site generators such as [Hugo](https://gohugo.io/),
+[middleman](https://middlemanapp.com/) and [jekyll](https://jekyllrb.com/).
 
 ## Usage
 
@@ -69,3 +70,12 @@ The path to save screenshots of base and head. Default `"diff-pages-action/tmp"`
 ### `path`
 
 The path of a directory contains saved screenshots.
+
+## Development
+
+`diff-pages-action` uses Docker for development and test. Type the command
+below to check commands for development.
+
+```bash
+make help
+```
