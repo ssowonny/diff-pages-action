@@ -34,40 +34,50 @@ steps:
     path: '${{ steps.diffpages.outputs.path }}'
 ```
 
-## Inputs
+## Demo
 
-### `base-path`
+### Upload Artifacts
+
+Artifacts of updated page screenshots can be uploaded.
+
+![artifacts-example](https://github.com/ssowonny/diff-pages-action/raw/master/docs/images/artifacts-example.png)
+
+## Action Metadata
+
+### Inputs
+
+#### `base-path`
 
 **Required** The path to the base of static pages. Static pages for base branch of
 each PR can be assigned to it.
 
-### `head-path`
+#### `head-path`
 
 **Required** The path to the head of static pages. Static pages for head branch of
 each PR can be assigned to it.
 
-### `pattern`
+#### `pattern`
 
 Pattern string for detecting page files among the static files. It follows
 [node-glob](https://github.com/isaacs/node-glob#glob-primer) syntax. Default
 `**/*.+(htm|html)` for finding all files having htm or html extensions.
 
-### `port`
+#### `port`
 
 The port value for running the static server. Another port can be used in case
 of port conflict. Default `8000`.
 
-### `output-path`
+#### `output-path`
 
 The path to save updated screenshots. Default `"diff-pages-action/output"`.
 
-### `temp-path`
+#### `temp-path`
 
 The path to save screenshots of base and head. Default `"diff-pages-action/tmp"`.
 
-## Outputs
+### Outputs
 
-### `path`
+#### `path`
 
 The path of a directory contains saved screenshots.
 
@@ -79,3 +89,13 @@ below to check commands for development.
 ```bash
 make help
 ```
+
+### Test
+
+`make test` command runs tests using docker environment.
+
+## Roadmap
+
+- Support setting up browser options.
+- Make an example of uploading screenshots as a pull request comment.
+- Build one page summary which contains all the updated images.
