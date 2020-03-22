@@ -1,6 +1,6 @@
 {
   "name": "diff-pages-action",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "description": "Take screenshots of updated static web pages",
   "main": "sample.js",
   "directories": {
