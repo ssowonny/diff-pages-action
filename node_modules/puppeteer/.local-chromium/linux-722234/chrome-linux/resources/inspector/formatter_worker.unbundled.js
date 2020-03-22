@@ -1,0 +1,2 @@
+import'./platform/platform.js';import'./text_utils/text_utils.js';import'./cm_headless/cm_headless.js';import'./formatter_worker/formatter_worker.js';if(!self.Root||!self.Root.Runtime){self.importScripts('Runtime.js');}
+Root.Runtime.startWorker('formatter_worker');

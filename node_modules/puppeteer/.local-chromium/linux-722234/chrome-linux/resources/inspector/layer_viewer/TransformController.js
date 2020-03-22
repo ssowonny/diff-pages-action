@@ -1,0 +1,30 @@
+export class TransformController extends Common.Object{constructor(element,disableRotate){super();this._shortcuts={};this.element=element;this._registerShortcuts();UI.installDragHandle(element,this._onDragStart.bind(this),this._onDrag.bind(this),this._onDragEnd.bind(this),'move',null);element.addEventListener('keydown',this._onKeyDown.bind(this),false);element.addEventListener('mousewheel',this._onMouseWheel.bind(this),false);this._minScale=0;this._maxScale=Infinity;this._controlPanelToolbar=new UI.Toolbar('transform-control-panel');this._modeButtons={};if(!disableRotate){const panModeButton=new UI.ToolbarToggle(Common.UIString('Pan mode (X)'),'largeicon-pan');panModeButton.addEventListener(UI.ToolbarButton.Events.Click,this._setMode.bind(this,Modes.Pan));this._modeButtons[Modes.Pan]=panModeButton;this._controlPanelToolbar.appendToolbarItem(panModeButton);const rotateModeButton=new UI.ToolbarToggle(Common.UIString('Rotate mode (V)'),'largeicon-rotate');rotateModeButton.addEventListener(UI.ToolbarButton.Events.Click,this._setMode.bind(this,Modes.Rotate));this._modeButtons[Modes.Rotate]=rotateModeButton;this._controlPanelToolbar.appendToolbarItem(rotateModeButton);}
+this._setMode(Modes.Pan);const resetButton=new UI.ToolbarButton(Common.UIString('Reset transform (0)'),'largeicon-center');resetButton.addEventListener(UI.ToolbarButton.Events.Click,this.resetAndNotify.bind(this,undefined));this._controlPanelToolbar.appendToolbarItem(resetButton);this._reset();}
+toolbar(){return this._controlPanelToolbar;}
+_onKeyDown(event){const shortcutKey=UI.KeyboardShortcut.makeKeyFromEventIgnoringModifiers(event);const handler=this._shortcuts[shortcutKey];if(handler&&handler(event)){event.consume();}}
+_addShortcuts(keys,handler){for(let i=0;i<keys.length;++i){this._shortcuts[keys[i].key]=handler;}}
+_registerShortcuts(){this._addShortcuts(UI.ShortcutsScreen.LayersPanelShortcuts.ResetView,this.resetAndNotify.bind(this));this._addShortcuts(UI.ShortcutsScreen.LayersPanelShortcuts.PanMode,this._setMode.bind(this,Modes.Pan));this._addShortcuts(UI.ShortcutsScreen.LayersPanelShortcuts.RotateMode,this._setMode.bind(this,Modes.Rotate));const zoomFactor=1.1;this._addShortcuts(UI.ShortcutsScreen.LayersPanelShortcuts.ZoomIn,this._onKeyboardZoom.bind(this,zoomFactor));this._addShortcuts(UI.ShortcutsScreen.LayersPanelShortcuts.ZoomOut,this._onKeyboardZoom.bind(this,1/zoomFactor));this._addShortcuts(UI.ShortcutsScreen.LayersPanelShortcuts.Up,this._onKeyboardPanOrRotate.bind(this,0,-1));this._addShortcuts(UI.ShortcutsScreen.LayersPanelShortcuts.Down,this._onKeyboardPanOrRotate.bind(this,0,1));this._addShortcuts(UI.ShortcutsScreen.LayersPanelShortcuts.Left,this._onKeyboardPanOrRotate.bind(this,-1,0));this._addShortcuts(UI.ShortcutsScreen.LayersPanelShortcuts.Right,this._onKeyboardPanOrRotate.bind(this,1,0));}
+_postChangeEvent(){this.dispatchEventToListeners(Events.TransformChanged);}
+_reset(){this._scale=1;this._offsetX=0;this._offsetY=0;this._rotateX=0;this._rotateY=0;}
+_setMode(mode){if(this._mode===mode){return;}
+this._mode=mode;this._updateModeButtons();}
+_updateModeButtons(){for(const mode in this._modeButtons){this._modeButtons[mode].setToggled(mode===this._mode);}}
+resetAndNotify(event){this._reset();this._postChangeEvent();if(event){event.preventDefault();}
+this.element.focus();}
+setScaleConstraints(minScale,maxScale){this._minScale=minScale;this._maxScale=maxScale;this._scale=Number.constrain(this._scale,minScale,maxScale);}
+clampOffsets(minX,maxX,minY,maxY){this._offsetX=Number.constrain(this._offsetX,minX,maxX);this._offsetY=Number.constrain(this._offsetY,minY,maxY);}
+scale(){return this._scale;}
+offsetX(){return this._offsetX;}
+offsetY(){return this._offsetY;}
+rotateX(){return this._rotateX;}
+rotateY(){return this._rotateY;}
+_onScale(scaleFactor,x,y){scaleFactor=Number.constrain(this._scale*scaleFactor,this._minScale,this._maxScale)/this._scale;this._scale*=scaleFactor;this._offsetX-=(x-this._offsetX)*(scaleFactor-1);this._offsetY-=(y-this._offsetY)*(scaleFactor-1);this._postChangeEvent();}
+_onPan(offsetX,offsetY){this._offsetX+=offsetX;this._offsetY+=offsetY;this._postChangeEvent();}
+_onRotate(rotateX,rotateY){this._rotateX=rotateX;this._rotateY=rotateY;this._postChangeEvent();}
+_onKeyboardZoom(zoomFactor){this._onScale(zoomFactor,this.element.clientWidth/2,this.element.clientHeight/2);}
+_onKeyboardPanOrRotate(xMultiplier,yMultiplier){const panStepInPixels=6;const rotateStepInDegrees=5;if(this._mode===Modes.Rotate){this._onRotate(this._rotateX+yMultiplier*rotateStepInDegrees,this._rotateY+xMultiplier*rotateStepInDegrees);}else{this._onPan(xMultiplier*panStepInPixels,yMultiplier*panStepInPixels);}}
+_onMouseWheel(event){const zoomFactor=1.1;const mouseWheelZoomSpeed=1/120;const scaleFactor=Math.pow(zoomFactor,event.wheelDeltaY*mouseWheelZoomSpeed);this._onScale(scaleFactor,event.clientX-this.element.totalOffsetLeft(),event.clientY-this.element.totalOffsetTop());}
+_onDrag(event){if(this._mode===Modes.Rotate){this._onRotate(this._oldRotateX+(this._originY-event.clientY)/this.element.clientHeight*180,this._oldRotateY-(this._originX-event.clientX)/this.element.clientWidth*180);}else{this._onPan(event.clientX-this._originX,event.clientY-this._originY);this._originX=event.clientX;this._originY=event.clientY;}}
+_onDragStart(event){this.element.focus();this._originX=event.clientX;this._originY=event.clientY;this._oldRotateX=this._rotateX;this._oldRotateY=this._rotateY;return true;}
+_onDragEnd(){delete this._originX;delete this._originY;delete this._oldRotateX;delete this._oldRotateY;}}
+export const Events={TransformChanged:Symbol('TransformChanged')};export const Modes={Pan:'Pan',Rotate:'Rotate',};self.LayerViewer=self.LayerViewer||{};LayerViewer=LayerViewer||{};LayerViewer.TransformController=TransformController;LayerViewer.TransformController.Events=Events;LayerViewer.TransformController.Modes=Modes;

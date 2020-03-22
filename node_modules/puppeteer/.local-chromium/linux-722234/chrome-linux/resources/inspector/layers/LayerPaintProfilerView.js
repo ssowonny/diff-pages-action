@@ -1,0 +1,6 @@
+export default class LayerPaintProfilerView extends UI.SplitWidget{constructor(showImageCallback){super(true,false);this._logTreeView=new LayerViewer.PaintProfilerCommandLogView();this.setSidebarWidget(this._logTreeView);this._paintProfilerView=new LayerViewer.PaintProfilerView(showImageCallback);this.setMainWidget(this._paintProfilerView);this._paintProfilerView.addEventListener(LayerViewer.PaintProfilerView.Events.WindowChanged,this._onWindowChanged,this);}
+reset(){this._paintProfilerView.setSnapshotAndLog(null,[],null);}
+profile(snapshot){snapshot.commandLog().then(log=>setSnapshotAndLog.call(this,snapshot,log));function setSnapshotAndLog(snapshot,log){this._logTreeView.setCommandLog(log||[]);this._paintProfilerView.setSnapshotAndLog(snapshot,log||[],null);if(snapshot){snapshot.release();}}}
+setScale(scale){this._paintProfilerView.setScale(scale);}
+_onWindowChanged(){this._logTreeView.updateWindow(this._paintProfilerView.selectionWindow());}}
+self.Layers=self.Layers||{};Layers=Layers||{};Layers.LayerPaintProfilerView=LayerPaintProfilerView;

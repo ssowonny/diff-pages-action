@@ -1,0 +1,10 @@
+export class ObjectEventListenersSidebarPane extends UI.VBox{constructor(){super();this._refreshButton=new UI.ToolbarButton(ls`Refresh global listeners`,'largeicon-refresh');this._refreshButton.addEventListener(UI.ToolbarButton.Events.Click,this._refreshClick,this);this._refreshButton.setEnabled(false);this._eventListenersView=new EventListeners.EventListenersView(this.update.bind(this));this._eventListenersView.show(this.element);this.setDefaultFocusedChild(this._eventListenersView);}
+toolbarItems(){return[this._refreshButton];}
+update(){if(this._lastRequestedContext){this._lastRequestedContext.runtimeModel.releaseObjectGroup(_objectGroupName);delete this._lastRequestedContext;}
+const executionContext=UI.context.flavor(SDK.ExecutionContext);if(!executionContext){this._eventListenersView.reset();this._eventListenersView.addEmptyHolderIfNeeded();return;}
+this._lastRequestedContext=executionContext;Promise.all([this._windowObjectInContext(executionContext)]).then(this._eventListenersView.addObjects.bind(this._eventListenersView));}
+wasShown(){super.wasShown();UI.context.addFlavorChangeListener(SDK.ExecutionContext,this.update,this);this._refreshButton.setEnabled(true);this.update();}
+willHide(){super.willHide();UI.context.removeFlavorChangeListener(SDK.ExecutionContext,this.update,this);this._refreshButton.setEnabled(false);}
+_windowObjectInContext(executionContext){return executionContext.evaluate({expression:'self',objectGroup:_objectGroupName,includeCommandLineAPI:false,silent:true,returnByValue:false,generatePreview:false},false,false).then(result=>result.object&&!result.exceptionDetails?result.object:null);}
+_refreshClick(event){event.data.consume();this.update();}}
+export const _objectGroupName='object-event-listeners-sidebar-pane';self.BrowserDebugger=self.BrowserDebugger||{};BrowserDebugger=BrowserDebugger||{};BrowserDebugger.ObjectEventListenersSidebarPane=ObjectEventListenersSidebarPane;BrowserDebugger.ObjectEventListenersSidebarPane._objectGroupName=_objectGroupName;

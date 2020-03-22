@@ -1,0 +1,2 @@
+export class DefaultCodeMirrorMimeMode{async install(extension){const modeFileName=extension.descriptor()['fileName'];return(eval(`import('./${modeFileName}')`));}}
+CmModes.DefaultCodeMirrorMimeMode=DefaultCodeMirrorMimeMode;

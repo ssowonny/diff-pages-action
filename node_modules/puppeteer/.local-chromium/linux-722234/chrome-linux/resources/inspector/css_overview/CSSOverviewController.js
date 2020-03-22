@@ -1,0 +1,4 @@
+export class OverviewController extends Common.Object{constructor(){super();this.currentUrl=SDK.targetManager.inspectedURL();SDK.targetManager.addEventListener(SDK.TargetManager.Events.InspectedURLChanged,this._checkUrlAndResetIfChanged,this);}
+_checkUrlAndResetIfChanged(){if(this.currentUrl===SDK.targetManager.inspectedURL()){return;}
+this.currentUrl=SDK.targetManager.inspectedURL();this.dispatchEventToListeners(Events.Reset);}}
+export const Events={RequestOverviewStart:Symbol('RequestOverviewStart'),RequestNodeHighlight:Symbol('RequestNodeHighlight'),PopulateNodes:Symbol('PopulateNodes'),RequestOverviewCancel:Symbol('RequestOverviewCancel'),OverviewCompleted:Symbol('OverviewCompleted'),Reset:Symbol('Reset'),};self.CssOverview=self.CssOverview||{};CssOverview=CssOverview||{};CssOverview.OverviewController=OverviewController;CssOverview.Events=Events;
