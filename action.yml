@@ -8,13 +8,20 @@ inputs:
     description: 'Path to new static pages.'
     required: true
   output-path:
-    description: 'Path to save the screenshots.'
+    description: 'Path for saving final screenshots.'
     required: true
-# outputs:
+    default: page-differences-action/output
+  temp-path:
+    description: 'Path for saving temporary screenshots.'
+    required: true
+    default: page-differences-action/tmp
+  port:
+    description: 'Port for running local static web server'
+    required: true
+    default: 8000
+outputs:
+  path:
+    description: 'Path to saved screenshots.'
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  args:
-    - ${{ inputs.old_path }}
-    - ${{ inputs.new_path }}
-    - ${{ outputs.path }}
+  using: 'node12'
+  main: 'index.js'
