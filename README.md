@@ -45,9 +45,16 @@ each PR can be assigned to it.
 **Required** The path to the head of static pages. Static pages for head branch of
 each PR can be assigned to it.
 
+### `pattern`
+
+Pattern string for detecting page files among the static files. It follows
+[node-glob](https://github.com/isaacs/node-glob#glob-primer) syntax. Default
+`**/*.+(htm|html)` for finding all files having htm or html extensions.
+
 ### `port`
 
-The port value for running the static server. Default `8080`.
+The port value for running the static server. Another port can be used in case
+of port conflict. Default `8000`.
 
 ### `output-path`
 
