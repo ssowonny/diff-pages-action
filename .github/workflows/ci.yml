@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x]
+        node-version: [12.x]
 
     steps:
     - uses: actions/checkout@v2
@@ -29,3 +29,14 @@ jobs:
     - run: npm test
       env:
         CI: true
+
+    - uses: ssowonny/diff-pages-action@master
+      with:
+        base-path: 'example/base'
+        head-path: 'example/head'
+      id: diffpages
+
+    - uses: actions/upload-artifact@v1
+      with:
+        name: changes-artifact
+        path: '${{ steps.diffpages.outputs.path }}'
