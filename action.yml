@@ -30,3 +30,6 @@ outputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
+branding:
+  icon: 'sidebar'
+  color: 'orange'
