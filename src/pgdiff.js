@@ -18,7 +18,7 @@ async function createDiffScreenshots(basePath, headPath, tempPath, outputPath, p
 }
 
 async function captureScreenshots(rootUrl, inputPath, outputPath, pattern = "**/*.+(htm|html)") {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
   const files = glob.sync(`${inputPath}/${pattern}`)
     .map((file) => path.relative(inputPath, file));
 
