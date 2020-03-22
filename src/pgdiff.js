@@ -5,15 +5,29 @@ const path = require('path');
 const { copyDiffFiles } = require('./files');
 
 async function createDiffScreenshots(basePath, headPath, tempPath, outputPath, port, pattern) {
+  const tmpHeadPath = tempPath + '/head';
+  const tmpBasePath = tempPath + '/base';
+
+  // TODO: Modularize the folder creation.
+  if (!fs.existsSync(tmpHeadPath)) {
+    fs.mkdirSync(tmpHeadPath, { recursive: true });
+  }
+  if (!fs.existsSync(tmpBasePath)) {
+    fs.mkdirSync(tmpBasePath, { recursive: true });
+  }
+
   await Promise.all([
-    captureScreenshots(`http://localhost:${port}/head/`, headPath, tempPath + '/head', pattern),
-    captureScreenshots(`http://localhost:${port}/base/`, basePath, tempPath + '/base', pattern),
+    captureScreenshots(`http://localhost:${port}/head/`, headPath, tmpHeadPath, pattern),
+    captureScreenshots(`http://localhost:${port}/base/`, basePath, tmpBasePath, pattern),
   ]);
+
+  // TODO: Print the number of created screenshots.
   console.log(`Base page screenshots are created in ${tempPath}/base`);
   console.log(`Head page screenshots are created in ${tempPath}/head`);
 
   await copyDiffFiles(`${tempPath}/base`, `${tempPath}/head`, outputPath);
   console.log(`Different screenshots are copied to ${outputPath}`);
+
   return outputPath;
 }
 
