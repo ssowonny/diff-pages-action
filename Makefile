@@ -16,10 +16,10 @@ build:
 	docker build . -t $(PROJECT_NAME)
 
 test:
-	docker run -it -v $(PWD):/diff-pages-action -w /diff-pages-action --entrypoint npm $(PROJECT_NAME) test
+	docker run -it -v $(PWD):/diff-pages-action --entrypoint npm $(PROJECT_NAME) test
 
 ci:
-	docker run -it -v $(PWD):/diff-pages-action -w /diff-pages-action --entrypoint npm $(PROJECT_NAME) ci
+	docker run -it -v $(PWD):/diff-pages-action --entrypoint npm $(PROJECT_NAME) ci
 
 sh:
-	docker run -it -v $(PWD):/diff-pages-action -w /diff-pages-action --entrypoint /bin/bash $(PROJECT_NAME)
+	docker run -it -v $(PWD):/diff-pages-action --entrypoint /bin/bash $(PROJECT_NAME)
