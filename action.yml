@@ -1,11 +1,11 @@
 name: 'Page Differences'
 description: 'Take screenshots of static web page differences'
 inputs:
-  old-path:
-    description: 'Path to old static pages.'
+  base-path:
+    description: 'Path to base static pages.'
     required: true
-  new-path:
-    description: 'Path to new static pages.'
+  head-path:
+    description: 'Path to head static pages.'
     required: true
   output-path:
     description: 'Path for saving final screenshots.'

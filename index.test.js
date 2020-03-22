@@ -5,7 +5,7 @@ const { runServer } = require('./src/server');
 var server = null;
 
 beforeAll(() => {
-  server = runServer('example/old-path', 'example/new-path', 8000);
+  server = runServer('example/base', 'example/head', 8000);
 });
 
 afterAll((done) => {
@@ -15,12 +15,7 @@ afterAll((done) => {
 test('Create differnt files', async () => {
   fs.removeSync('tmp'); 
 
-  await createDiffScreenshots(
-    path.resolve(__dirname, 'example/old-path'),
-    path.resolve(__dirname, 'example/new-path'),
-    path.resolve(__dirname, 'tmp/tmp'),
-    path.resolve(__dirname, 'tmp/output'),
-    8000);
+  await createDiffScreenshots('example/base', 'example/head', 'tmp/tmp', 'tmp/output', 8000);
 
   expect(fs.existsSync('tmp/output/new.html.jpg')).toBeTruthy();
   expect(fs.existsSync('tmp/output/index.html.jpg')).toBeTruthy();

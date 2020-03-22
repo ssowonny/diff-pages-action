@@ -4,15 +4,15 @@ const puppeteer = require('puppeteer');
 const path = require('path');
 const { copyDiffFiles } = require('./files');
 
-async function createDiffScreenshots(oldPath, newPath, tempPath, outputPath, port) {
+async function createDiffScreenshots(basePath, headPath, tempPath, outputPath, port) {
   await Promise.all([
-    captureScreenshots(`http://localhost:${port}/new/`, newPath, tempPath + '/new'),
-    captureScreenshots(`http://localhost:${port}/old/`, oldPath, tempPath + '/old'),
+    captureScreenshots(`http://localhost:${port}/head/`, headPath, tempPath + '/head'),
+    captureScreenshots(`http://localhost:${port}/base/`, basePath, tempPath + '/base'),
   ]);
-  console.log(`Old page screenshots are created in ${tempPath}/old`);
-  console.log(`New page screenshots are created in ${tempPath}/new`);
+  console.log(`Base page screenshots are created in ${tempPath}/base`);
+  console.log(`Head page screenshots are created in ${tempPath}/head`);
 
-  await copyDiffFiles(`${tempPath}/old`, `${tempPath}/new`, outputPath);
+  await copyDiffFiles(`${tempPath}/base`, `${tempPath}/head`, outputPath);
   console.log(`Different screenshots are copied to ${outputPath}`);
   return outputPath;
 }
