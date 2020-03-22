@@ -1,4 +1,5 @@
 name: 'Page Differences'
+author: 'Sungwon Lee'
 description: 'Take screenshots of static web page differences'
 inputs:
   base-path:
