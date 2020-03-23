@@ -9,16 +9,20 @@ integrated by any static site generators such as [Hugo](https://gohugo.io/),
 
 ```yaml
 steps:
+# Checkout and build files of a base ref.
 - uses: actions/checkout@v2
   with:
     ref: ${{ github.event.pull_request.base.sha }}
 - run: echo "Build the static pages into 'path/to/base'"
 
+# Checkout and build files of a head ref.
 - uses: actions/checkout@v2
   with:
     ref: ${{ github.event.pull_request.head.sha }}
+    clean: false # Prevent removing files in 'path/to/base' folder.
 - run: echo "Build the static pages into 'path/to/head'"
 
+# Capture page differences.
 - id: diffpages
   uses: ssowonny/diff-pages-action@v1
   with:
@@ -38,7 +42,10 @@ steps:
 
 ### Upload Artifacts
 
-Artifacts of updated page screenshots can be uploaded.
+Artifacts of updated page screenshots can be uploaded. Check
+[diff-pages-action-example](https://github.com/ssowonny/diff-pages-action-example)
+repository's [workflow](https://github.com/ssowonny/diff-pages-action-example/blob/master/.github/workflows/pr.yml)
+for more details.
 
 ![artifacts-example](https://github.com/ssowonny/diff-pages-action/raw/master/docs/images/artifacts-example.png)
 

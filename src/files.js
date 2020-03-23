@@ -7,13 +7,6 @@ async function copyDiffFiles(left, right, output) {
     fs.mkdirSync(output, { recursive: true });
   }
 
-  // TODO: Remove this debugging log.
-  exec(`ls -lR`, (error, stdout, stderr) => {
-    console.log(error);
-    console.log(stdout);
-    console.log(stderr);
-  });
-
   await new Promise((resolve, reject) => {
     // TODO: Validate the folders exist.
     exec(`diff ${left} ${right} --unidirectional-new-file --brief -r | grep '^Files '`, (error, stdout, stderr) => {
