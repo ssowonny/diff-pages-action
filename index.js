@@ -8,15 +8,6 @@ const outputPath = core.getInput('output-path', { required: true });
 const port = core.getInput('port', { required: true });
 const pattern = core.getInput('pattern', { required: true });
 
-var server = null;
-try {
-  server = runServer(basePath, headPath, port, () => {
-    console.log(`Server listening on ${port}`);
-  });
-} catch (error) {
-  core.setFailed(error.message);
-}
-
 (async () => {
   try {
     const path = await createDiffScreenshots(basePath, headPath, tempPath, outputPath, port, pattern);
