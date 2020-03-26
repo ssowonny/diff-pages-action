@@ -7,7 +7,7 @@ async function copyDiffFiles(left, right, output) {
     fs.mkdirSync(output, { recursive: true });
   }
 
-  await new Promise((resolve, reject) => {
+  const lines = await new Promise((resolve, reject) => {
     // TODO: Validate the folders exist.
     exec(`diff ${left} ${right} --unidirectional-new-file --brief -r | grep '^Files '`, (error, stdout, stderr) => {
       if (stderr) {
@@ -15,24 +15,29 @@ async function copyDiffFiles(left, right, output) {
       }
       resolve(stdout.split("\n"));
     });
-  }).then((lines) => {
-    for (const line of lines) {
-      const matched = line.match(new RegExp(`${right}/[^ ]*`));
-      if (matched && matched[0]) {
-        const filePath = matched[0];
-        const copyPath = output + '/' + path.relative(right, filePath);
-        const dir = path.dirname(copyPath);
-        if (!fs.existsSync(dir)) {
-          fs.mkdirSync(dir, { recursive: true });
-        }
-        fs.copyFile(filePath, copyPath, (err) => {
-          if (err) {
-            throw err;
-          }
-        });
-      }
-    }
   });
+
+  var count = 0;
+  for (const line of lines) {
+    const matched = line.match(new RegExp(`${right}/[^ ]*`));
+    if (matched && matched[0]) {
+      ++ count;
+
+      const filePath = matched[0];
+      const copyPath = output + '/' + path.relative(right, filePath);
+      const dir = path.dirname(copyPath);
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+      fs.copyFile(filePath, copyPath, (err) => {
+        if (err) {
+          throw err;
+        }
+      });
+    }
+  }
+
+  return count;
 }
 
 module.exports = { copyDiffFiles };

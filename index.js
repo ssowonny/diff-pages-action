@@ -1,6 +1,5 @@
 const core = require('@actions/core');
 const { createDiffScreenshots } = require('./src/pgdiff.js');
-const { runServer } = require('./src/server.js');
 
 const basePath = core.getInput('base-path', { required: true });
 const headPath = core.getInput('head-path', { required: true });
@@ -25,9 +24,4 @@ try {
   } catch (error) {
     core.setFailed(error.message);
   }
-
-  server.close(() => {
-    console.log("Server is closed.")
-    process.exit();
-  });
 })();

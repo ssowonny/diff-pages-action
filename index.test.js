@@ -4,13 +4,7 @@ const { createDiffScreenshots } = require('./src/pgdiff');
 const { runServer } = require('./src/server');
 var server = null;
 
-beforeAll((done) => {
-  server = runServer('example/base', 'example/head', 8000, done);
-});
-
-afterAll((done) => {
-  server.close(done);
-})
+jest.setTimeout(10000);
 
 test('Create differnt files', async () => {
   fs.removeSync('tmp'); 

@@ -1,3 +1,5 @@
+.PHONY: build test ci sh
+
 PROJECT_NAME := $(notdir $(CURDIR))
 
 default: build

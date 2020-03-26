@@ -1,10 +1,12 @@
 const express = require('express');
 
-function runServer(basePath, headPath, port, callback) {
-  const app = express();
-  app.use('/base', express.static(basePath));
-  app.use('/head', express.static(headPath));
-  return app.listen(port, callback);
+function runServer(basePath, port) {
+  return new Promise((resolve, reject) => {
+    const app = express();
+    app.use('/', express.static(basePath));
+    const server = require('http').createServer(app);
+    server.listen(port, () => resolve(server));
+  });
 }
 
 module.exports = { runServer }
