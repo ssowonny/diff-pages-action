@@ -3,12 +3,11 @@ const fs = require('fs');
 const { exec } = require("child_process");
 
 async function copyDiffFiles(left, right, output) {
-  if (!fs.existsSync(output)){
-    fs.mkdirSync(output, { recursive: true });
-  }
+  ensureFolderExistsSync(left);
+  ensureFolderExistsSync(right);
+  ensureFolderExistsSync(output);
 
   const lines = await new Promise((resolve, reject) => {
-    // TODO: Validate the folders exist.
     exec(`diff ${left} ${right} --unidirectional-new-file --brief -r | grep '^Files '`, (error, stdout, stderr) => {
       if (stderr) {
         reject(new Error(stderr));
@@ -26,9 +25,7 @@ async function copyDiffFiles(left, right, output) {
       const filePath = matched[0];
       const copyPath = output + '/' + path.relative(right, filePath);
       const dir = path.dirname(copyPath);
-      if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true });
-      }
+      ensureFolderExistsSync(dir);
       fs.copyFile(filePath, copyPath, (err) => {
         if (err) {
           throw err;

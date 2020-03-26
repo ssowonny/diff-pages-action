@@ -1,5 +1,5 @@
 const core = require('@actions/core');
-const { createDiffScreenshots } = require('./src/pgdiff.js');
+const { createDiffScreenshots } = require('./diffpg');
 
 const basePath = core.getInput('base-path', { required: true });
 const headPath = core.getInput('head-path', { required: true });

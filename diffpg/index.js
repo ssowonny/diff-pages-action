@@ -1,5 +1,4 @@
 const glob = require('glob');
-const fs = require('fs');
 const puppeteer = require('puppeteer');
 const path = require('path');
 const { copyDiffFiles, ensureFolderExistsSync } = require('./files');

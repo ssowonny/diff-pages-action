@@ -1,8 +1,6 @@
 const path = require('path');
 const fs = require('fs-extra');
-const { createDiffScreenshots } = require('./src/pgdiff');
-const { runServer } = require('./src/server');
-var server = null;
+const { createDiffScreenshots } = require('./diffpg');
 
 jest.setTimeout(10000);
 
