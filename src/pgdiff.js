@@ -2,20 +2,14 @@ const glob = require('glob');
 const fs = require('fs');
 const puppeteer = require('puppeteer');
 const path = require('path');
-const { copyDiffFiles } = require('./files');
+const { copyDiffFiles, ensureFolderExistsSync } = require('./files');
 const { runServer } = require('./server.js');
 
 async function createDiffScreenshots(basePath, headPath, tempPath, outputPath, port, pattern) {
   const tmpHeadPath = tempPath + '/head';
   const tmpBasePath = tempPath + '/base';
-
-  // TODO: Modularize the folder creation.
-  if (!fs.existsSync(tmpHeadPath)) {
-    fs.mkdirSync(tmpHeadPath, { recursive: true });
-  }
-  if (!fs.existsSync(tmpBasePath)) {
-    fs.mkdirSync(tmpBasePath, { recursive: true });
-  }
+  ensureFolderExistsSync(tmpBasePath);
+  ensureFolderExistsSync(tmpHeadPath);
 
   const baseFilesCount = await captureScreenshots(basePath, tmpBasePath, pattern, port);
   console.log(`${baseFilesCount} base page screenshots are created in ${tempPath}/base`);
@@ -41,9 +35,7 @@ async function captureScreenshots(inputPath, outputPath, pattern, port) {
     await page.goto(`http://localhost:${port}/${file}`, { waitUntil: 'networkidle0', timeout: 20 * 1000 });
     const filePath = `${outputPath}/${file}.jpg`;
     const dir = path.dirname(filePath);
-    if (!fs.existsSync(dir)){
-      fs.mkdirSync(dir, { recursive: true });
-    }
+    ensureFolderExistsSync(dir);
     await page.screenshot({ path: filePath });
   }))
 

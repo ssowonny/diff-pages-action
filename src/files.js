@@ -40,4 +40,10 @@ async function copyDiffFiles(left, right, output) {
   return count;
 }
 
-module.exports = { copyDiffFiles };
+function ensureFolderExistsSync(dir) {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+}
+
+module.exports = { copyDiffFiles, ensureFolderExistsSync };
