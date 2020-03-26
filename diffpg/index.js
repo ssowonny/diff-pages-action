@@ -1,8 +1,8 @@
 const glob = require('glob');
 const puppeteer = require('puppeteer');
 const path = require('path');
-const { copyDiffFiles, ensureFolderExistsSync } = require('./files');
-const { runServer } = require('./server.js');
+const { copyDiffFiles, ensureFolderExistsSync } = require(path.join(__dirname, 'files'));
+const { runServer } = require(path.join(__dirname, 'server'));
 
 async function createDiffScreenshots(basePath, headPath, tempPath, outputPath, port, pattern) {
   const tmpHeadPath = tempPath + '/head';
