@@ -24,18 +24,28 @@ async function createDiffScreenshots(basePath, headPath, tempPath, outputPath, p
 
 async function captureScreenshots(inputPath, outputPath, pattern, port) {
   const server = await runServer(inputPath, port);
-  const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+  const browser = await puppeteer.launch({ executablePath: 'google-chrome-unstable', args: ['--no-sandbox', '--disable-setuid-sandbox'] });
   const files = glob.sync(`${inputPath}/${pattern}`)
     .map((file) => path.relative(inputPath, file));
 
   await Promise.all(files.map(async file => {
     const page = await browser.newPage();
-    await page.setViewport({ width: 2048, height: 1024})
+    await page.setViewport({ width: 1920, height: 1080})
     await page.goto(`http://localhost:${port}/${file}`, { waitUntil: 'networkidle0', timeout: 20 * 1000 });
-    const filePath = `${outputPath}/${file}.jpg`;
+    const filePath = `${outputPath}/${file}-desktop.jpg`;
     const dir = path.dirname(filePath);
     ensureFolderExistsSync(dir);
-    await page.screenshot({ path: filePath });
+    await page.screenshot({ path: filePath, fullPage: true });
+  }))
+  
+  await Promise.all(files.map(async file => {
+    const page = await browser.newPage();
+    await page.setViewport({ width: 375, height: 812})
+    await page.goto(`http://localhost:${port}/${file}`, { waitUntil: 'networkidle0', timeout: 20 * 1000 });
+    const filePath = `${outputPath}/${file}-mobile.jpg`;
+    const dir = path.dirname(filePath);
+    ensureFolderExistsSync(dir);
+    await page.screenshot({ path: filePath, fullPage: true });
   }))
 
   await browser.close();
