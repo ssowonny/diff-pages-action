@@ -35,7 +35,7 @@ async function captureScreenshots(inputPath, outputPath, pattern, port) {
     const filePath = `${outputPath}/${file}.jpg`;
     const dir = path.dirname(filePath);
     ensureFolderExistsSync(dir);
-    await page.screenshot({ path: filePath });
+    await page.screenshot({ path: filePath, fullPage: true });
   }))
 
   await browser.close();
