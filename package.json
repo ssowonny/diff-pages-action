@@ -7,7 +7,7 @@
     "example": "example"
   },
   "dependencies": {
-    "@actions/core": "^1.2.3",
+    "@actions/core": "^1.9.1",
     "@actions/github": "^2.1.1",
     "express": "^4.17.1",
     "glob": "^7.1.6",
