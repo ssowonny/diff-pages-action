@@ -9,7 +9,7 @@
   "dependencies": {
     "@actions/core": "^1.2.3",
     "@actions/github": "^2.1.1",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "glob": "^7.1.6",
     "minimist": ">=1.2.2",
     "puppeteer": "^2.1.1"
